@@ -1,9 +1,3 @@
-from dis import disco
-from http import client
-from operator import imod
-from tokenize import Token
-
-
 import discord
 
 #botのトークン
