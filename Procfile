@@ -1,1 +1,1 @@
-web: python timer.py
+discordbot: python discordbot.py
