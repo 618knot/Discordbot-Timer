@@ -1,7 +1,6 @@
+from os import getenv
 import discord
 
-#botのトークン
-Token = 'OTU1MTEwMDU3NjgxNDg1ODI1.Yjc5jg.OITf13hJftfBTT8Ttft1pFCdtoc'
 
 #接続に必要なオブジェクト
 client = discord.Client()
@@ -17,4 +16,6 @@ async def on_ready():
     await client.change_presence(activity=discord.Game(name = "under development"))
 
 #botの起動とDiscordサーバーへの接続
-client.run(Token)
+#botのトークン
+token = getenv('Token')
+client.run(token)
