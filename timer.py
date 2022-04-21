@@ -2,7 +2,7 @@ from discord.ext import commands
 from os import getenv
 import discord
 
-bot = commands.Bot(command_prefix='#')
+bot = commands.Bot(command_prefix='$')
 
 #接続に必要なオブジェクト
 client = discord.Client()
@@ -19,7 +19,7 @@ async def on_ready():
 
 #コマンドごとの処理
 @bot.command()
-async def ping(ctx,a):
+async def test(ctx,a):
     await ctx.send(a)
 
 #botの起動とDiscordサーバーへの接続
