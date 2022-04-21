@@ -18,10 +18,10 @@ async def on_ready():
 
 #コマンドごとの処理
 bot = commands.Bot(command_prefix='#')
-@bot.command
+@bot.command()
 async def ping(ctx):
     await ctx.send('pong')
-    
+
 #botの起動とDiscordサーバーへの接続
 #botのトークン
 token = getenv('Token')
