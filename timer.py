@@ -2,6 +2,7 @@ from discord.ext import commands
 from os import getenv
 import discord
 
+bot = commands.Bot(command_prefix='#')
 
 #接続に必要なオブジェクト
 client = discord.Client()
@@ -17,10 +18,9 @@ async def on_ready():
     await client.change_presence(activity=discord.Game(name = "under development"))
 
 #コマンドごとの処理
-bot = commands.Bot(command_prefix='#')
 @bot.command()
-async def ping(ctx):
-    await ctx.send('pong')
+async def ping(ctx,a):
+    await ctx.send(a)
 
 #botの起動とDiscordサーバーへの接続
 #botのトークン
