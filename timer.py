@@ -16,6 +16,12 @@ async def on_ready():
     print("--------")
     await client.change_presence(activity=discord.Game(name = "under development"))
 
+#コマンドごとの処理
+bot = commands.Bot(command_prefix='#')
+@bot.command
+async def ping(ctx):
+    await ctx.send('pong')
+    
 #botの起動とDiscordサーバーへの接続
 #botのトークン
 token = getenv('Token')
