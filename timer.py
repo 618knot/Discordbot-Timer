@@ -14,6 +14,13 @@ async def on_ready():
     print("--------")
     await bot.change_presence(activity=discord.Game(name = "under development"))
 
+#コマンドの動作
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+    await bot.process_commands(message)
+
 #コマンドごとの処理
 @bot.command()
 async def test(ctx, a):
