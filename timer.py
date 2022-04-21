@@ -19,7 +19,7 @@ async def on_ready():
 
 #コマンドごとの処理
 @bot.command()
-async def test(ctx,a):
+async def test(ctx, a):
     await ctx.send(a)
 
 #botの起動とDiscordサーバーへの接続
