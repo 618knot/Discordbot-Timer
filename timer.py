@@ -2,6 +2,7 @@ from discord.ext import commands
 from os import getenv
 import discord
 import traceback
+import ffmpeg
 
 bot = commands.Bot(command_prefix='/')
 
@@ -25,6 +26,30 @@ async def on_command_error(ctx, error):
 @bot.command()
 async def ping(ctx,arg):
     await ctx.send(arg)
+
+@bot.command()
+async def join(ctx):
+    if ctx.author.voice is None:
+        await ctx.send("あなたはボイスチャンネルに接続していません")
+    
+    #VC接続
+    await ctx.author.voice.channel.connect()
+
+@bot.command()
+async def leave(ctx):
+    if ctx.guild.voice_client is None:
+        await ctx.channel.send("接続していません")
+        return
+
+    #VC切断
+    await ctx.guild.voice_client.disconnect()
+
+@bot.command()
+async def play(ctx):
+    if ctx.guild.voice_client is None:
+        await ctx.channel.send("接続していません。")
+        return
+    ctx.guild.voice_client.play(discord.FFmpegPCMAudio("shiningStar.mp3"))
 
 #botの起動とDiscordサーバーへの接続
 #botのトークン
