@@ -1,10 +1,10 @@
 from discord.ext import commands
 from os import getenv
 import discord
+import traceback
 
-bot = commands.Bot(command_prefix='$')
+bot = commands.Bot(command_prefix='/')
 
-#起動時の処理
 @bot.event
 async def on_ready():
     print("on_ready")
@@ -14,19 +14,17 @@ async def on_ready():
     print("--------")
     await bot.change_presence(activity=discord.Game(name = "under development"))
 
+
 @bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
-    
-    await message.channel.send(message)
+async def on_command_error(ctx, error):
+    orig_error = getattr(error, "original", error)
+    error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
+    await ctx.send(error_msg)
 
-    await bot.process_commands(message)
 
-#コマンドごとの処理
 @bot.command()
-async def test(ctx, a):
-    await ctx.send(a)
+async def ping(ctx,arg):
+    await ctx.send(arg)
 
 #botの起動とDiscordサーバーへの接続
 #botのトークン
