@@ -1,4 +1,3 @@
-from pickle import TRUE
 from discord.ext import commands,tasks
 from os import getenv
 import discord
@@ -22,20 +21,7 @@ async def on_ready():
 async def on_command_error(ctx, error):
     orig_error = getattr(error, "original", error)
     error_msg = ''.join(traceback.TracebackException.from_exception(orig_error).format())
-    await ctx.send(error_msg)
-
-
-@bot.command()
-async def ping(ctx,arg):
-    await ctx.send(arg)
-
-@bot.command()
-async def join(ctx):
-    if ctx.author.voice is None:
-        await ctx.send("あなたはボイスチャンネルに接続していません")
-    
-    #VC接続
-    await ctx.author.voice.channel.connect()
+    print(error_msg)
 
 @bot.command()
 async def leave(ctx):
@@ -48,17 +34,15 @@ async def leave(ctx):
 
 @bot.command()
 async def play(ctx,alarm):
-    if ctx.guild.voice_client is None:
-        await ctx.channel.send("接続していません。")
-        return
-    hmlist = countdown(alarm)
+    #VC接続
+    await ctx.author.voice.channel.connect()
+    #タイマーセット/アラーム
+    hmlist = countdowntime(alarm)
     timer = hmlist[0] * 360 + hmlist[1] * 60
     await asyncio.sleep(timer)
     ctx.guild.voice_client.play(discord.FFmpegPCMAudio("shiningStar.mp3"))
 
-
-
-def countdown(alarm):
+def countdowntime(alarm):
     counter = 0
     counth = 0
     hour = False
