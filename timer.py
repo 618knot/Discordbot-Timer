@@ -1,8 +1,10 @@
-from discord.ext import commands
+from pickle import TRUE
+from discord.ext import commands,tasks
 from os import getenv
 import discord
 import traceback
 import ffmpeg
+import asyncio
 
 bot = commands.Bot(command_prefix='/')
 
@@ -45,11 +47,44 @@ async def leave(ctx):
     await ctx.guild.voice_client.disconnect()
 
 @bot.command()
-async def play(ctx):
+async def play(ctx,alarm):
     if ctx.guild.voice_client is None:
         await ctx.channel.send("接続していません。")
         return
+    hmlist = countdown(alarm)
+    timer = hmlist[0] * 360 + hmlist[1] * 60
+    await asyncio.sleep(timer)
     ctx.guild.voice_client.play(discord.FFmpegPCMAudio("shiningStar.mp3"))
+
+
+
+def countdown(alarm):
+    counter = 0
+    counth = 0
+    hour = False
+    minute = False
+    for i in alarm:
+        if i == 'h':
+            hour = True
+            counth = counter
+            alarmh = int(alarm[0:counth])
+        elif i == 'm' and counth == 0:
+            minute = True
+            countm = counter
+            alarmm = int(alarm[counth:countm])
+        elif i == 'm' and counth != 0:
+            minute = True
+            countm = counter
+            alarmm = int(alarm[counth+1:countm])
+        counter = counter + 1
+    if hour == True and minute == True:
+        return alarmh,alarmm
+    elif hour == True and minute == False:
+        return alarmh,0
+    elif hour == False and minute == True:
+        return 0,alarmm
+    else:
+        return 0,0
 
 #botの起動とDiscordサーバーへの接続
 #botのトークン
