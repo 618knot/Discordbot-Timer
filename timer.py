@@ -39,8 +39,10 @@ async def set(ctx,alarm):
     #タイマーセット/アラーム
     hmlist = countdowntime(alarm)
     timer = hmlist[0] * 360 + hmlist[1] * 60
+    await ctx.channel.send(f'{ctx.author.mention} アラームを{timer}秒後にセットしました')
     await asyncio.sleep(timer)
     ctx.guild.voice_client.play(discord.FFmpegPCMAudio("shiningStar.mp3"))
+    await ctx.channel.send(f'{ctx.author.mention} {timer}秒が経過しました')
 
 def countdowntime(alarm):
     counter = 0
