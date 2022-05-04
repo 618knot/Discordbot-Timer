@@ -33,7 +33,7 @@ async def leave(ctx):
     await ctx.guild.voice_client.disconnect()
 
 @bot.command()
-async def play(ctx,alarm):
+async def set(ctx,alarm):
     #VC接続
     await ctx.author.voice.channel.connect()
     #タイマーセット/アラーム
