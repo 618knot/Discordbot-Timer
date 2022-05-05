@@ -4,6 +4,7 @@ import discord
 import traceback
 import ffmpeg
 import asyncio
+import time
 
 bot = commands.Bot(command_prefix='/')
 
@@ -32,18 +33,31 @@ async def leave(ctx):
     #VC切断
     await ctx.guild.voice_client.disconnect()
 
+task = None
 @bot.command()
 async def set(ctx,alarm):
     if ctx.guild.voice_client is None:
         #VC接続
         await ctx.author.voice.channel.connect()
+    #停止処理
+    global task
+    print(task)
+    task = asyncio.current_task()
     #タイマーセット/アラーム
     hmlist = countdowntime(alarm)
     timer = hmlist[0] * 3600 + hmlist[1] * 60
-    await ctx.channel.send(f'{ctx.author.mention} アラームを{timer}秒後にセットしました')
+    await ctx.channel.send(f'{ctx.author.mention} タイマーを{timer}秒後にセットしました')    
     await asyncio.sleep(timer)
     ctx.guild.voice_client.play(discord.FFmpegPCMAudio("shiningStar.mp3"))
     await ctx.channel.send(f'{ctx.author.mention} {timer}秒が経過しました')
+
+@bot.command()
+async def stop(ctx):
+    global task
+    if task != None:
+        await ctx.channel.send('タイマーを停止しました')
+        task.cancel()
+    task = None
 
 def countdowntime(alarm):
     counter = 0
