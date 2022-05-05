@@ -34,11 +34,12 @@ async def leave(ctx):
 
 @bot.command()
 async def set(ctx,alarm):
-    #VC接続
-    await ctx.author.voice.channel.connect()
+    if ctx.guild.voice_client is None:
+        #VC接続
+        await ctx.author.voice.channel.connect()
     #タイマーセット/アラーム
     hmlist = countdowntime(alarm)
-    timer = hmlist[0] * 360 + hmlist[1] * 60
+    timer = hmlist[0] * 3600 + hmlist[1] * 60
     await ctx.channel.send(f'{ctx.author.mention} アラームを{timer}秒後にセットしました')
     await asyncio.sleep(timer)
     ctx.guild.voice_client.play(discord.FFmpegPCMAudio("shiningStar.mp3"))
